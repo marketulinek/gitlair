@@ -1,22 +1,14 @@
-from django.conf import settings
 from django.core.handlers.wsgi import WSGIHandler
 from django.core.management import execute_from_command_line
 from django.shortcuts import render
 from django.urls import path
-from pathlib import Path
+
+import os
+import django
 
 
-settings.configure(
-    ROOT_URLCONF=__name__,
-    DEBUG=True,
-    SECRET_KEY="my-secret-key",
-    TEMPLATES=[
-        {
-            "BACKEND": "django.template.backends.django.DjangoTemplates",
-            "DIRS": [Path(__file__).parent / "templates"],
-        }
-    ],
-)
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'settings')
+django.setup()
 
 
 def index(request):
