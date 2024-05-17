@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="d-flex align-items-center p-3 my-3 text-white bg-purple rounded shadow-sm">
+    <img class="me-3" src="../assets/brand/bootstrap-logo-white.svg" alt="" width="48" height="38">
+    <div class="lh-1">
+      <h1 class="h6 mb-0 text-white lh-1">marketulinek / repositories</h1>
+    </div>
+  </div>
+
+  <div class="my-3 p-3 bg-body rounded shadow-sm">
+<!--    <h6 class="border-bottom pb-2 mb-0">Quick status</h6>-->
+      <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Repo name</th>
+              <th scope="col">Type</th>
+              <th scope="col">Dependabot</th>
+              <th scope="col">Last full checked</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">1</th>
+              <td>bookishop</td>
+              <td>personal project</td>
+              <td>yes</td>
+              <td>18.4.2024</td>
+            </tr>
+            <tr>
+              <th scope="row">2</th>
+              <td>czechitas-homework</td>
+              <td>course project</td>
+              <td>no</td>
+              <td>6.6.2022</td>
+            </tr>
+            <tr>
+              <th scope="row">3</th>
+              <td>my-notes</td>
+              <td>ignored</td>
+              <td>no</td>
+              <td>3.4.2024</td>
+            </tr>
+          </tbody>
+      </table>
+  </div>
+{% endblock content %}
