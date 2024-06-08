@@ -17,7 +17,16 @@ class GithubApi:
 
     HEADERS = {'content-type': 'application/json'}
 
-    def request(self, url):
+    def get_user_repos(self, username):
+        url = self.URL_USER_REPOS.format(username)
+        return self._request(url)
+
+    def get_repo_pulls(self, username, reponame):
+        # https://api.github.com/repos/marketulinek/bookishop/pulls
+        url = self.URL_REPO_PULLS.format(username, reponame)
+        return self._request(url)
+
+    def _request(self, url):
         if not self._rate_limit_ok():
             print("GitHub API rate limit exceeded")
             return None
@@ -27,15 +36,6 @@ class GithubApi:
             return response.json()
         else:
             return None
-
-    def get_user_repos(self, username):
-        url = self.URL_USER_REPOS.format(username)
-        return self.request(url)
-
-    def get_repo_pulls(self, username, reponame):
-        # https://api.github.com/repos/marketulinek/bookishop/pulls
-        url = self.URL_REPO_PULLS.format(username, reponame)
-        return self.request(url)
 
     def _make_api_request(self, url):
         """Makes a GET request to the specified URL."""
