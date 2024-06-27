@@ -13,9 +13,8 @@ def index(request):
         pulls = gh.get_repo_pulls('marketulinek', reponame)
         for pull in pulls:
             if pull['user']['login'] == 'dependabot[bot]' and pull['title'][:5] == 'Bump ':
-
                 updates = []
-                if 'Bump the bundler group with ' in pull['title']:
+                if 'Bump the bundler group' in pull['title']:
                     content_lines = pull['body'].split('\n')
                     for line in content_lines:
                         if line[:9] == 'Updates `':
