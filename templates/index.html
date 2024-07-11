@@ -10,4 +10,48 @@
         <h1 class="h6 mb-0 text-white lh-1">marketulinek</h1>
     </div>
 </div>
+
+<div class="my-3 p-3 bg-body rounded shadow-sm">
+    <h6 class="border-bottom pb-2 mb-0">Quick overview</h6>
+    <div class="d-flex text-body-secondary pt-3">
+        <div class="status-icon bg-{{ bumps_status }} rounded me-2"></div>
+        <div class="pb-3 mb-0 small lh-sm border-bottom w-100">
+            <div class="d-flex justify-content-between">
+                <strong class="text-gray-dark">Dependabot bumps</strong>
+            </div>
+            {% if bumps|length > 0 %}
+            <table class="quick-status-table table table-sm table-borderless font-monospace">
+                <thead>
+                <tr>
+                    <th scope="col" colspan="2"></th>
+                    <th scope="col">From</th>
+                    <th scope="col">To</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                {% for bump in bumps %}
+                {% ifchanged %}
+                <tr class="repo-top-border">
+                    <th>{{ bump.reponame }}</th>
+                    {% else %}
+                <tr>
+                    <th></th>
+                    {% endifchanged %}
+                    <td>{{ bump.library }}</td>
+                    <td>{{ bump.from }}</td>
+                    <td>{{ bump.to }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% elif bumps_status == 'success' %}
+            Everything is up-to-date :-)
+            {% elif bumps_status == 'danger' %}
+            Something went wrong :-(
+            {% endif %}
+        </div>
+    </div>
+    <small class="d-block text-end mt-3"></small>
+</div>
 {% endblock content %}
