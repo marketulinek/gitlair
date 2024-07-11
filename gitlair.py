@@ -64,7 +64,8 @@ class IndexView(TemplateView):
                     bumps.append(new_bump)
         return bumps
 
-    def is_dependabot_bump(self, pull):
+    @staticmethod
+    def is_dependabot_bump(pull):
         """
         Check if a pull request is dependabot bump.
 
@@ -73,14 +74,16 @@ class IndexView(TemplateView):
         """
         return pull['user']['login'] == 'dependabot[bot]' and pull['title'].startswith('Bump ')
 
-    def extract_updates(self, pull):
+    @staticmethod
+    def extract_updates(pull):
         if 'Bump the bundler group' in pull['title']:
             content_lines = pull['body'].split('\n')
             return [line.replace('`', '') for line in content_lines if line.startswith('Updates `')]
         else:
             return [pull['title']]
 
-    def parse_bump(self, update, reponame):
+    @staticmethod
+    def parse_bump(update, reponame):
         title_parts = update.split()
         return {
             'reponame': reponame,
