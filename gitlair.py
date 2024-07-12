@@ -39,7 +39,8 @@ class IndexView(TemplateView):
         for reponame in repos_list:
             pulls = gh.get_repo_pulls('marketulinek', reponame)
             if pulls is not None:
-                bumps.extend(self.process_pulls(pulls, reponame))
+                dependabot_pulls = filter(self.is_dependabot_bump, pulls)
+                bumps.extend(self.process_pulls(dependabot_pulls, reponame))
 
         if len(bumps) > 0:
             bumps_status = 'warning'
@@ -57,11 +58,10 @@ class IndexView(TemplateView):
         """
         bumps = []
         for pull in pulls:
-            if self.is_dependabot_bump(pull):
-                updates = self.extract_updates(pull)
-                for update in updates:
-                    new_bump = self.parse_bump(update, reponame)
-                    bumps.append(new_bump)
+            updates = self.extract_updates(pull)
+            for update in updates:
+                new_bump = self.parse_bump(update, reponame)
+                bumps.append(new_bump)
         return bumps
 
     @staticmethod
