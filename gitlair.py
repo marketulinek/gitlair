@@ -58,7 +58,7 @@ class IndexView(TemplateView):
         """
         bumps = []
         for pull in pulls:
-            updates = self.extract_updates(pull)
+            updates = self.extract_dependency_bump(pull)
             for update in updates:
                 new_bump = self.parse_bump(update, reponame)
                 bumps.append(new_bump)
@@ -75,7 +75,16 @@ class IndexView(TemplateView):
         return pull['user']['login'] == 'dependabot[bot]' and pull['title'].startswith('Bump ')
 
     @staticmethod
-    def extract_updates(pull):
+    def extract_dependency_bump(pull):
+        """
+        Extract dependency bump details from a dependabot pull request.
+
+        This method checks if the bump is for a single library or a bundle of libraries
+        and extracts the relevant update information.
+
+        :param pull: Pull request data
+        :return: List of update titles
+        """
         if 'Bump the bundler group' in pull['title']:
             content_lines = pull['body'].split('\n')
             return [line.replace('`', '') for line in content_lines if line.startswith('Updates `')]
