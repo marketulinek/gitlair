@@ -58,9 +58,9 @@ class IndexView(TemplateView):
         """
         bumps = []
         for pull in pulls:
-            updates = self.extract_dependency_bump(pull)
+            updates = self.extract_bump_info(pull)
             for update in updates:
-                new_bump = self.parse_bump(update, reponame)
+                new_bump = self.parse_bump_info(update, reponame)
                 bumps.append(new_bump)
         return bumps
 
@@ -75,7 +75,7 @@ class IndexView(TemplateView):
         return pull['user']['login'] == 'dependabot[bot]' and pull['title'].startswith('Bump ')
 
     @staticmethod
-    def extract_dependency_bump(pull):
+    def extract_bump_info(pull):
         """
         Extract dependency bump details from a dependabot pull request.
 
@@ -92,7 +92,14 @@ class IndexView(TemplateView):
             return [pull['title']]
 
     @staticmethod
-    def parse_bump(update, reponame):
+    def parse_bump_info(update, reponame):
+        """
+        Parse a bump update info into a dictionary.
+
+        :param update: Update data
+        :param reponame: Name of the repository
+        :return: Dictionary representing the bump update
+        """
         title_parts = update.split()
         return {
             'reponame': reponame,
