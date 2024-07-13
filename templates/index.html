@@ -1,7 +1,59 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>GitLair</h1>
+<div class="d-flex align-items-center p-3 my-3 text-white bg-purple rounded shadow-sm">
+    <svg xmlns="http://www.w3.org/2000/svg" width="38" height="38" fill="currentColor" class="bi bi-github me-3"
+         viewBox="0 0 16 16">
+        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
+    </svg>
+    <div class="lh-1">
+        <h1 class="h6 mb-0 text-white lh-1">marketulinek</h1>
+    </div>
+</div>
 
-    <p>The lair of all my repositories</p>
+<div class="my-3 p-3 bg-body rounded shadow-sm">
+    <h6 class="border-bottom pb-2 mb-0">Quick overview</h6>
+    <div class="d-flex text-body-secondary pt-3">
+        <div class="status-icon bg-{{ bumps_status }} rounded me-2"></div>
+        <div class="pb-3 mb-0 small lh-sm border-bottom w-100">
+            <div class="d-flex justify-content-between">
+                <strong class="text-gray-dark">Dependabot bumps</strong>
+            </div>
+            {% if bumps_status == 'success' %}
+            Everything is up-to-date :-)
+            {% elif bumps_status == 'danger' %}
+            <span class="text-danger">GitHub API rate limit exceeded. The data may not be complete.</span>
+            {% endif %}
+
+            {% if bumps|length > 0 %}
+            <table class="quick-status-table table table-sm table-borderless font-monospace">
+                <thead>
+                <tr>
+                    <th scope="col" colspan="2"></th>
+                    <th scope="col">From</th>
+                    <th scope="col">To</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                {% for bump in bumps %}
+                {% ifchanged %}
+                <tr class="repo-top-border">
+                    <th>{{ bump.reponame }}</th>
+                    {% else %}
+                <tr>
+                    <th></th>
+                    {% endifchanged %}
+                    <td>{{ bump.library }}</td>
+                    <td>{{ bump.from }}</td>
+                    <td>{{ bump.to }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% endif %}
+        </div>
+    </div>
+    <small class="d-block text-end mt-3"></small>
+</div>
 {% endblock content %}
