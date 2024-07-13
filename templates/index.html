@@ -19,6 +19,12 @@
             <div class="d-flex justify-content-between">
                 <strong class="text-gray-dark">Dependabot bumps</strong>
             </div>
+            {% if bumps_status == 'success' %}
+            Everything is up-to-date :-)
+            {% elif bumps_status == 'danger' %}
+            <span class="text-danger">GitHub API rate limit exceeded. The data may not be complete.</span>
+            {% endif %}
+
             {% if bumps|length > 0 %}
             <table class="quick-status-table table table-sm table-borderless font-monospace">
                 <thead>
@@ -45,10 +51,6 @@
                 {% endfor %}
                 </tbody>
             </table>
-            {% elif bumps_status == 'success' %}
-            Everything is up-to-date :-)
-            {% elif bumps_status == 'danger' %}
-            Something went wrong :-(
             {% endif %}
         </div>
     </div>

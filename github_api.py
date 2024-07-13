@@ -17,6 +17,9 @@ class GithubApi:
 
     HEADERS = {'content-type': 'application/json'}
 
+    class ApiRateLimitExceeded(Exception):
+        pass
+
     def get_user_repos(self, username):
         """
         Retrieve repositories for a given GitHub username.
@@ -46,8 +49,7 @@ class GithubApi:
         :return: Response JSON or None if an error occurs
         """
         if not self._rate_limit_ok():
-            print("GitHub API rate limit exceeded")
-            return None
+            raise self.ApiRateLimitExceeded("GitHub API rate limit exceeded")
 
         response = self._make_api_request(url)
         if response.status_code == 200:

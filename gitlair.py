@@ -37,13 +37,15 @@ class IndexView(TemplateView):
         bumps_status = 'success'
 
         for reponame in repos_list:
-            pulls = gh.get_repo_pulls('marketulinek', reponame)
-            if pulls is not None:
-                dependabot_pulls = filter(self.is_dependabot_bump, pulls)
-                bumps.extend(self.process_pulls(dependabot_pulls, reponame))
-
-        if len(bumps) > 0:
-            bumps_status = 'warning'
+            try:
+                pulls = gh.get_repo_pulls('marketulinek', reponame)
+                if pulls is not None:
+                    bumps_status = 'warning'
+                    dependabot_pulls = filter(self.is_dependabot_bump, pulls)
+                    bumps.extend(self.process_pulls(dependabot_pulls, reponame))
+            except gh.ApiRateLimitExceeded as _:
+                bumps_status = 'danger'
+                break
 
         return bumps, bumps_status
 
